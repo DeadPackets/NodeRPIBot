@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NodeJSRobot</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/hammer.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>help me god</h1>
+    <script>
+        var socket = io.connect()
+        $(function() {
+          var keypress
+            console.log("loaded")
+            $('body').on('keydown keyup', function(e) {
+                //console.log(e.which + " " + e.type)
+                if (e.which == "87"){
+                  if (e.type == "keydown"){
+                    if (keypress == true){
+                    } else {
+                    console.log("W is pressed")
+                    keypress = true
+                    socket.emit('move forward')
+                  }
+                } else {
+                  console.log("W is not pressed")
+                  keypress = false
+                  socket.emit('stop forward')
+                }
+                }
+		if (e.which == "68"){
+                  if (e.type == "keydown"){
+                    if (keypress == true){
+                    } else {
+                    console.log("D is pressed")
+                    keypress = true
+                    socket.emit('turn right')
+                  }
+                } else {
+                  console.log("D is not pressed")
+                  keypress = false
+                  socket.emit('stop right')
+                }
+                }
+		if (e.which == "65"){
+                  if (e.type == "keydown"){
+                    if (keypress == true){
+                    } else {
+                    console.log("A is pressed")
+                    keypress = true
+                    socket.emit('turn left')
+                  }
+                } else {
+                  console.log("A is not pressed")
+                  keypress = false
+                  socket.emit('stop left')
+                }
+                }
+		if (e.which == "83"){
+                  if (e.type == "keydown"){
+                    if (keypress == true){
+                    } else {
+                    console.log("S is pressed")
+                    keypress = true
+                    socket.emit('move back')
+                  }
+                } else {
+                  console.log("S is not pressed")
+                  keypress = false
+                  socket.emit('stop back')
+                }
+          	}
+            });
+        })
+    </script>
+</body>
+
+</html>
