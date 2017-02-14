@@ -9,6 +9,8 @@
   var http = require('http')
   var httpport = 80;
   var gpio = require('rpi-gpio');
+  var si = require('systeminformation');
+  const exec = require('child_process').exec;
 
   //GPIO setup
   gpio.setup(7, gpio.DIR_OUT)
@@ -24,6 +26,25 @@
   var DisableGPIO = function(gpiopin){
 	gpio.output(gpiopin, false)
   }
+  var TakePicture = function(ifupload){
+	  //picture taking code here
+	  if (ifupload == true){
+		  //upload code goes here
+	  } else {
+		  //non upload code here
+	  }
+  };
+  var TakeVideo = function(ifupload, duration){
+	  //video taking code here
+	  if (ifupload == true){
+		  //upload code goes here
+	  } else {
+		  //non upload code here
+	  }
+  };
+
+  //Sys info functions
+
 
   //Logging functions
   var log = {
@@ -104,7 +125,10 @@
 	DisableGPIO(11)
 	DisableGPIO(13)
       })
-  })
-  io.on('disconnection', function(){
-	console.log("poof")
+      socket.on('take pic', function(data){
+	      TakePicture(data)
+      }
+      socket.on('take vid', function(data, duration){
+	      TakeVideo(data, duration)
+      }
   })
