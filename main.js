@@ -90,45 +90,59 @@
       log.info(socket.handshake.address + " has connected.")
 
       socket.on('move forward', function(){
-        console.log("Moving forward")
+        //console.log("Moving forward")
 	EnableGPIO(7)
 	EnableGPIO(15)
       })
       socket.on('stop forward', function(){
-        console.log('Stopping forward')
+        //console.log('Stopping forward')
 	DisableGPIO(7)
 	DisableGPIO(15)
       })
       socket.on('turn left', function(){
-        console.log("Turning left")
+        //console.log("Turning left")
 	EnableGPIO(7)
       })
       socket.on('stop left', function(){
-        console.log('Stopping left')
+        //console.log('Stopping left')
 	DisableGPIO(7)
       })
       socket.on('turn right', function(){
-        console.log("Turning right")
+        //console.log("Turning right")
 	EnableGPIO(15)
       })
       socket.on('stop right', function(){
-        console.log('Stopping right')
+        //console.log('Stopping right')
 	DisableGPIO(15)
       })
       socket.on('move back', function(){
-        console.log("Moving back")
+        //console.log("Moving back")
 	EnableGPIO(11)
 	EnableGPIO(13)
       })
       socket.on('stop back', function(){
-        console.log("Stopping back")
+        //console.log("Stopping back")
 	DisableGPIO(11)
 	DisableGPIO(13)
       })
       socket.on('take pic', function(data){
 	      TakePicture(data)
-      }
+      })
       socket.on('take vid', function(data, duration){
 	      TakeVideo(data, duration)
-      }
+      })
+      socket.on('output led words', function(data){
+        var p1 = '"'
+        var p2 = '"'
+        var first = p1.concat(data)
+        var final = first.concat(p2)
+        console.log(final)
+        exec("sudo python /home/pi/luma.led_matrix/test.py " + final, (error, stdout, stderr) => {
+          if (error) {
+            log.error(error)
+            return;
+          }
+          console.log(stdout)
+        })
+      })
   })
