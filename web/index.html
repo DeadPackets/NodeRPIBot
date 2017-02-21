@@ -6,77 +6,171 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/hammer.min.js"></script>
     <script src="/js/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/117c8dce30.js"></script>
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+			<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+			<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
-    <h1>pls help me i cant stop</h1>
-    <iframe src="http://192.168.0.126:8081/?action=stream" width="360px" height="240px" scrolling="no" frameborder="no" marginheight="0px"></iframe>
-    <script>
-        var socket = io.connect()
-        $(function() {
-          var keypress
-            console.log("loaded")
-            $('body').on('keydown keyup', function(e) {
-                //console.log(e.which + " " + e.type)
-                if (e.which == "87"){
-                  if (e.type == "keydown"){
-                    if (keypress == true){
-                    } else {
-                    console.log("W is pressed")
-                    keypress = true
-                    socket.emit('move forward')
-                  }
-                } else {
-                  console.log("W is not pressed")
-                  keypress = false
-                  socket.emit('stop forward')
-                }
-                }
-		if (e.which == "68"){
-                  if (e.type == "keydown"){
-                    if (keypress == true){
-                    } else {
-                    console.log("D is pressed")
-                    keypress = true
-                    socket.emit('turn right')
-                  }
-                } else {
-                  console.log("D is not pressed")
-                  keypress = false
-                  socket.emit('stop right')
-                }
-                }
-		if (e.which == "65"){
-                  if (e.type == "keydown"){
-                    if (keypress == true){
-                    } else {
-                    console.log("A is pressed")
-                    keypress = true
-                    socket.emit('turn left')
-                  }
-                } else {
-                  console.log("A is not pressed")
-                  keypress = false
-                  socket.emit('stop left')
-                }
-                }
-		if (e.which == "83"){
-                  if (e.type == "keydown"){
-                    if (keypress == true){
-                    } else {
-                    console.log("S is pressed")
-                    keypress = true
-                    socket.emit('move back')
-                  }
-                } else {
-                  console.log("S is not pressed")
-                  keypress = false
-                  socket.emit('stop back')
-                }
-          	}
-            });
-        })
-    </script>
+	<h1>NodeJSRobot</h1>
+	<iframe src="http://192.168.2.115:8081/?action=stream" width="360px" height="240px" scrolling="no" frameborder="no" marginheight="0px"></iframe>
+	<script>
+		var socket = io.connect();
+		function forward()
+		{
+			$('#forward').toggleClass('btn-default', false).toggleClass('btn-primary', true);
+			console.log('move forward');
+			socket.emit('move forward');
+		}
+		function stopForward()
+		{
+			$('#forward').toggleClass('btn-default', true).toggleClass('btn-primary', false);
+			console.log('stop forward');
+			socket.emit('stop forward');
+		}
+		function back()
+		{
+			$('#back').toggleClass('btn-default', false).toggleClass('btn-primary', true);
+			console.log('move back');
+			socket.emit('move back');
+		}
+		function stopBack()
+		{
+			$('#back').toggleClass('btn-default', true).toggleClass('btn-primary', false);
+			console.log('stop back');
+			socket.emit('stop back');
+		}
+		function left()
+		{
+			$('#left').toggleClass('btn-default', false).toggleClass('btn-primary', true);
+			console.log('turn left');
+			socket.emit('turn left');
+		}
+		function stopLeft()
+		{
+			$('#left').toggleClass('btn-default', true).toggleClass('btn-primary', false);
+			console.log('stop left');
+			socket.emit('stop left');
+		}
+		function right()
+		{
+			$('#right').toggleClass('btn-default', false).toggleClass('btn-primary', true);
+			console.log('turn right');
+			socket.emit('turn right');
+		}
+		function stopRight()
+		{
+			$('#right').toggleClass('btn-default', true).toggleClass('btn-primary', false);
+			console.log('stop right');
+			socket.emit('stop right');
+		}
+		$(function() {
+			var keypress
+			console.log("loaded")
+			$('body').on('keydown keyup', function(e) {
+				//console.log(e.which + " " + e.type)
+				if (e.which == "87"){
+					if (e.type == "keydown"){
+						if (!keypress){
+							keypress = true
+							forward();
+						}
+					} else {
+						keypress = false
+						stopForward();
+					}
+				}
+				if (e.which == "68"){
+					if (e.type == "keydown"){
+						if (!keypress){
+							keypress = true;
+							right();
+						}
+					} else {
+						keypress = false;
+						stopRight();
+					}
+				}
+				if (e.which == "65"){
+					if (e.type == "keydown"){
+						if (!keypress){
+							keypress = true;
+							left();
+						}
+					} else {
+						keypress = false
+						stopLeft();
+					}
+				}
+				if (e.which == "83"){
+					if (e.type == "keydown"){
+						if (!keypress){
+							keypress = true
+							back();
+						}
+					} else {
+						keypress = false
+						stopBack();
+					}
+				}
+			});
+		})
+	</script>
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-1"> 
+			<button
+				id="forward"
+				onMouseDown="forward()"
+				onMouseUp="stopForward()"
+				class="btn btn-default">
+				<span class="fa fa-arrow-up" aria-hidden="true"></span>
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1">
+			<button
+				id="left"
+				onMouseDown="left()"
+				onMouseUp="stopLeft()"
+				class="btn btn-default">
+				<span class="fa fa-arrow-left" aria-hidden="true"></span>
+			</button>
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-1">
+			<button
+				id="right"
+				onMouseDown="right()"
+				onMouseUp="stopRight()"
+				class="btn btn-default">
+				<span class="fa fa-arrow-right" aria-hidden="true"></span>
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-1">
+			<button
+				id="back"
+				onMouseDown="back()"
+				onMouseUp="stopBack()"
+				class="btn btn-default">
+				<span class="fa fa-arrow-down" aria-hidden="true"></span>
+			</button>
+		</div>
+	</div>
 </body>
-
 </html>
